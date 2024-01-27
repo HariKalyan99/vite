@@ -2,8 +2,11 @@
     width: 380px;
     height: 70px;
     padding: 1rem;
+    font-weight: 700;
+    font-size: xx-large;
 }
 
 .display {
     margin: 20px;
 }
+

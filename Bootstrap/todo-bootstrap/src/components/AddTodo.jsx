@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import {v4 as uuidv4} from 'uuid'
+import { MdAddTask } from "react-icons/md";
 
 const AddTodo = ({getTodo, setTodo}) => {
 
@@ -30,7 +31,7 @@ const AddTodo = ({getTodo, setTodo}) => {
             </div>
             <div className="col-2">
               <button type="submit" className="btn btn-success myButton">
-                Add
+                <MdAddTask />
               </button>
             </div>
           </div>

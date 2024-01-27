@@ -20,6 +20,11 @@ function App() {
   //   alert(`clikced on ${ele}`)
   // }
 
+  const OnDeleteItem = (itemData) => {
+    const delItem = foodItems.filter(itemD => itemData !== itemD); 
+    setFoodItems(delItem)
+  }
+
   return (
 
     <>
@@ -33,7 +38,7 @@ function App() {
     }}/>
     {foodItems.length ? <ul className='list-group'>
     {foodItems.map((ele, ind) => {
-      return <Itemlist item={ele} key={ind} listOfItems={foodItems} deleteItem={setFoodItems}/>
+      return <Itemlist item={ele} key={ind} listOfItems={foodItems} onDeleteItem={OnDeleteItem}/>
     })}
     </ul> : <h1>Add your skillsets</h1>}
     

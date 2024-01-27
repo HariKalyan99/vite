@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styles from './Itemlist.module.css'
 
 
-const Itemlist = ({item, listOfItems, deleteItem}) => {
+const Itemlist = ({item, listOfItems, onDeleteItem}) => {
 
   // const handleClick = () => {
   //   alert(`button clicked on ${item}`)
@@ -29,7 +29,7 @@ const Itemlist = ({item, listOfItems, deleteItem}) => {
           {item}
           <span> <button className={`btn btn-warning ${styles.myBtn}`} onClick={handleClick}>{getActive ? "Active" : "Inactive"}</button> </span> 
           <span> <button className={`btn btn-danger ${styles.myBtn}`} onClick={() => {
-            setDelete(!getDelete);
+            return onDeleteItem(item);
           }}>Delete</button> </span>
         </li>}
         </>
