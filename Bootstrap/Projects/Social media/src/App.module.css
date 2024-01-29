@@ -1,0 +1,33 @@
+.mainContainer {
+    display: flex;
+}
+
+.content {
+    width: 100%;
+}
+
+.sideBar {
+    min-height: 100vh;
+}
+
+
+.post-card {
+    margin: 20px 50px;
+}
+
+.hashTag {
+    margin: 0px 3px;
+}
+
+.reactions {
+    width: 100%;
+    margin: 15px 0 0 0;
+}
+
+
+.createPost {
+    width: 80%;
+    margin-top: 50px;
+    margin-left: 10%;
+
+}
