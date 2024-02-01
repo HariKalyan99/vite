@@ -1,0 +1,11 @@
+.featureContainer {
+    width: 60vw;
+    margin-left: 100px;
+
+}
+
+.cardContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
