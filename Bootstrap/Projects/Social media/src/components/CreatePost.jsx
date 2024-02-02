@@ -1,19 +1,16 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import styles from '../App.module.css';
+import styles from "../App.module.css";
 import { useContext, useRef } from "react";
 import { PostListStoreContext } from "../store/PostListStore";
 
 const CreatePost = () => {
-
   const postuserId = useRef("");
   const postTitle = useRef("");
   const postBody = useRef("");
   const postReactions = useRef("");
   const postTags = useRef("");
 
-
-  const {addPost} = useContext(PostListStoreContext);
-
+  const { addPost } = useContext(PostListStoreContext);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -22,14 +19,27 @@ const CreatePost = () => {
     const body = postBody.current.value;
     const reactions = postReactions.current.value;
     const tags = postTags.current.value.split(" ");
-    addPost(userId, title, body, reactions, tags);
     postuserId.current.value = "";
     postTitle.current.value = "";
     postBody.current.value = "";
     postReactions.current.value = "";
     postTags.current.value = [];
 
-  }
+    fetch("https://dummyjson.com/posts/add", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        title: title,
+        body: body,
+        reactions: reactions,
+        userId: userId,
+        tags: tags,
+      }),
+    })
+    .then((res) => res.json())
+    .then((data) => addPost(data));
+    // addPost(userId, title, body, reactions, tags);
+  };
   return (
     <form className={styles.createPost} onSubmit={handleSubmit}>
       <div className="mb-3">
@@ -60,7 +70,8 @@ const CreatePost = () => {
         <label htmlFor="body" className="form-label">
           Post Content
         </label>
-        <textarea rows={4}
+        <textarea
+          rows={4}
           type="text"
           className="form-control"
           id="body"

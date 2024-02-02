@@ -1,14 +1,15 @@
-import { createContext, useReducer } from "react";
+import { createContext, useCallback, useEffect, useReducer, useState } from "react";
 import { v4 as uuidv4 } from 'uuid';
 
 export const PostListStoreContext = createContext({
     postList: [],
+    fetching: false,
     addPost: () => {},
-    deletePost: () => {}
+    deletePost: () => {},
 });
 
 const postListReducerPure = (currentPostList, action) => {
-    console.log(currentPostList, action);
+    // console.log(currentPostList, action);
     let newPostList = currentPostList;
 
     if(action.type === "DELETE_POST"){
@@ -16,12 +17,14 @@ const postListReducerPure = (currentPostList, action) => {
     }else if(action.type === "ADD_POST"){
         newPostList = [{
             id: uuidv4(),
-            title: action.payload.title,
-            body: action.payload.body,
-            reactions: action.payload.reactions,
-            userId: action.payload.userId,
-            tags: action.payload.tags,
+            title: action.payload.posts.title,
+            body: action.payload.posts.body,
+            reactions: action.payload.posts.reactions,
+            userId: action.payload.posts.userId,
+            tags: action.payload.posts.tags,
         }, ...currentPostList]
+    }else if(action.type === "ADD_INITIAL_POSTS"){
+        newPostList = action.payload.posts;
     }
     return newPostList;
 }
@@ -30,18 +33,28 @@ const postListReducerPure = (currentPostList, action) => {
 
 const PostListStoreContextProvider = ({children}) => {
     
-    const [postList, dispatchPostList] = useReducer(postListReducerPure, trialDefaultValues);
-    const addPost = (userId, title, body, reactions, tags) => {
+    const [postList, dispatchPostList] = useReducer(postListReducerPure, []);
+    const addPost = (posts) => {
         // todo spread and add method
         dispatchPostList({
             type: "ADD_POST",
             payload: {
-                userId, title, body, reactions, tags
+                posts
             }
         })
     }
 
-    const deletePost = (removerId) => {
+    const addInitialPosts = useCallback((posts) => {
+
+        dispatchPostList({
+            type: "ADD_INITIAL_POSTS",
+            payload: {
+                posts
+            }
+        })
+    }, [dispatchPostList]);
+
+    const deletePost = useCallback((removerId) => {
         dispatchPostList({
             type: "DELETE_POST",
             payload: {
@@ -49,14 +62,49 @@ const PostListStoreContextProvider = ({children}) => {
             }
         })
         // todo filter method
-    }
+    }, [dispatchPostList]);
+
+
+    const [fetching, setFetching] = useState(false);
+
+    // console.log(postList);
+  
+    // if(!dataFetched){
+    //   fetch('https://dummyjson.com/posts')
+    // .then(res => res.json())
+    // .then(data => addInitialPosts(data.posts));
+    // setDataFetched(true);
+    // }
+  
+    // instead of using useState HOOKS To fetch an api call for the initial render we can use useEffect hook 
+  
+    useEffect(() => {
+      setFetching(true);
+      const controller = new AbortController();
+      // console.log("controller started", controller);
+      // console.log("started")
+      const signal = controller.signal;
+      fetch('https://dummyjson.com/posts', {signal})
+      .then(res => res.json())
+      .then((data) => {addInitialPosts(data.posts);
+        setFetching(false);
+      });
+  
+      //component unmount 
+      // this is a clean up function 
+      return () => {
+        // console.log("component unmounted or terminated");
+        controller.abort();
+      } 
+    }, [])
 
 
     return (
         <PostListStoreContext.Provider value={{
             postList,
+            fetching,
             addPost,
-            deletePost
+            deletePost,
         }}>
             {children}
         </PostListStoreContext.Provider>
@@ -64,23 +112,7 @@ const PostListStoreContextProvider = ({children}) => {
 }
 
 
-const trialDefaultValues = [{
-    id: '1',
-    title: "Going to LOndon",
-    body: "Hi friends, I am goin to London, lots of excitement and hope to return successful.",
-    reactions: 2,
-    userId: "user-10",
-    tags: ["Vacation","london", 'something new to explore'],
-},
-{
-    id: '2',
-    title: "coding",
-    body: "Hi friends, I am goin to code javascript, lots of excitement.",
-    reactions: 6,
-    userId: "user-16",
-    tags: ["coding", "Mern stack"],
-},
-]
+
 
 
 
