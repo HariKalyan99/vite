@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import styles from "../App.module.css";
+import styles from '../routes/App.module.css';
 import { MdDelete } from "react-icons/md";
 import { PostListStoreContext } from "../store/PostListStore";
 

@@ -1,24 +1,34 @@
 import React, { useContext, useEffect, useState} from "react";
 import Post from "./Post";
-import { PostListStoreContext } from "../store/PostListStore";
+// import { PostListStoreContext } from "../store/PostListStore";
 import WelcomeMeassage from "./WelcomeMeassage";
-import Loading from "./Loading";
+// import Loading from "./Loading";
+import { useLoaderData } from "react-router-dom";
 
 const PostList = () => {
 
-  const {postList, fetching} = useContext(PostListStoreContext);
+  // const {postList} = useContext(PostListStoreContext);
   // const [dataFetched, setDataFetched] = useState(false);
+  const postList = useLoaderData();
 
 
 
   return (
     <>
-    {fetching ? <Loading /> : postList.length === 0 && <WelcomeMeassage />}
-    {!fetching && postList.map((post) => (
+    {postList.length === 0 && <WelcomeMeassage />}
+    { postList.map((post) => (
       <Post key={post.id} post={post}/>
     ))}
     </>
   );
 };
+
+export const postLoader = () => {
+  return fetch('https://dummyjson.com/posts')
+  .then((res) => res.json())
+  .then((data) => {
+    return data.posts
+  });
+}
 
 export default PostList;

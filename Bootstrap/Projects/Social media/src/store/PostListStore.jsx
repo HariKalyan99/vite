@@ -3,7 +3,6 @@ import { v4 as uuidv4 } from 'uuid';
 
 export const PostListStoreContext = createContext({
     postList: [],
-    fetching: false,
     addPost: () => {},
     deletePost: () => {},
 });
@@ -36,6 +35,7 @@ const PostListStoreContextProvider = ({children}) => {
     const [postList, dispatchPostList] = useReducer(postListReducerPure, []);
     const addPost = (posts) => {
         // todo spread and add method
+        console.log(posts)
         dispatchPostList({
             type: "ADD_POST",
             payload: {
@@ -65,7 +65,7 @@ const PostListStoreContextProvider = ({children}) => {
     }, [dispatchPostList]);
 
 
-    const [fetching, setFetching] = useState(false);
+    // const [fetching, setFetching] = useState(false);
 
     // console.log(postList);
   
@@ -78,31 +78,31 @@ const PostListStoreContextProvider = ({children}) => {
   
     // instead of using useState HOOKS To fetch an api call for the initial render we can use useEffect hook 
   
-    useEffect(() => {
-      setFetching(true);
-      const controller = new AbortController();
-      // console.log("controller started", controller);
-      // console.log("started")
-      const signal = controller.signal;
-      fetch('https://dummyjson.com/posts', {signal})
-      .then(res => res.json())
-      .then((data) => {addInitialPosts(data.posts);
-        setFetching(false);
-      });
+    // useEffect(() => {
+    //   setFetching(true);
+    //   const controller = new AbortController();
+    //   // console.log("controller started", controller);   //we will be using post loader to load the data prior while returning to that page
+    //   // console.log("started")
+    //   const signal = controller.signal;
+    //   fetch('https://dummyjson.com/posts', {signal})
+    //   .then(res => res.json())
+    //   .then((data) => {addInitialPosts(data.posts);
+    //     setFetching(false);
+    //   });
   
-      //component unmount 
-      // this is a clean up function 
-      return () => {
-        // console.log("component unmounted or terminated");
-        controller.abort();
-      } 
-    }, [])
+    //   //component unmount 
+    //   // this is a clean up function 
+    //   return () => {
+    //     // console.log("component unmounted or terminated");
+    //     controller.abort();
+    //   } 
+    // }, [])
 
 
     return (
         <PostListStoreContext.Provider value={{
             postList,
-            fetching,
+            // fetching,
             addPost,
             deletePost,
         }}>
