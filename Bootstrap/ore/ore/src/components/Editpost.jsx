@@ -1,15 +1,21 @@
-import React, {useContext, useRef } from "react";
-import { oreStore } from "../store/Store";
+import React, { useContext, useRef, useState } from 'react'
+import { oreStore } from '../store/Store';
 
-const Addpost = () => {
-
-    const {addPost, selectedTab} = useContext(oreStore)
-
+const Editpost = ({post, children, setDisplayEdit}) => {
     let postUserId = useRef("");
     let postTitle = useRef("");
     let postBody = useRef("");
     let postReactions = useRef("");
     let postTags = useRef("");
+
+    const {editPost} = useContext(oreStore);
+
+
+    const [getUserId, setUserId] = useState(post.userId);
+    const [getTitle, setTitle] = useState(post.title);
+    const [getBody, setBody] = useState(post.body);
+    const [getReactions, setReactions] = useState(post.reactions);
+    const [getTags, setTags] = useState(post.tags);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -19,15 +25,9 @@ const Addpost = () => {
         const reactions = postReactions.current.value;
         const tagsArr = postTags.current.value;
         const tags = tagsArr.split(",");
-        addPost(userId, title, body, reactions, tags)
-        postUserId.current.value = "";
-        postTitle.current.value = "";
-        postBody.current.value = "";
-        postReactions.current.value = "";
-        postTags.current.value = "";
+        editPost(userId, title, body, reactions, tags, post.id)
+        setDisplayEdit(false)
     }
-
-  if(selectedTab === "Home"){
     return (
         <form className="formContainer" onSubmit={(e) => handleSubmit(e)}>
           <h1 className="h8 m-3 fw-normal">Add your post</h1>
@@ -37,6 +37,8 @@ const Addpost = () => {
               className="form-control"
               id="floatingInput"
               placeholder="name@example.com"
+              value={getUserId}
+              onChange={(e) => setUserId(e.target.value)}
               ref={postUserId}
             />
             <label htmlFor="floatingInput">Enter your UserId</label>
@@ -47,6 +49,8 @@ const Addpost = () => {
               className="form-control"
               id="floatingInput"
               placeholder="Title of your post"
+              value={getTitle}
+              onChange={(e) => setTitle(e.target.value)}
               ref={postTitle}
             />
             <label htmlFor="floatingInput">Title of your post</label>
@@ -57,6 +61,8 @@ const Addpost = () => {
               placeholder="Leave a comment here"
               id="floatingTextarea2"
               style={{ height: "100px" }}
+              value={getBody}
+              onChange={(e) => setBody(e.target.value)}
               ref={postBody}
             ></textarea>
             <label htmlFor="floatingTextarea2">Comments</label>
@@ -67,6 +73,8 @@ const Addpost = () => {
               className="form-control"
               id="floatingInput"
               placeholder="Reactions"
+              value={getReactions}
+              onChange={(e) => setReactions(e.target.value)}
               ref={postReactions}
             />
             <label htmlFor="floatingInput">Reactions</label>
@@ -77,6 +85,8 @@ const Addpost = () => {
               className="form-control"
               id="floatingInput"
               placeholder="Tags"
+              value={getTags}
+              onChange={(e) => setTags(e.target.value)}
               ref={postTags}
             />
             <label htmlFor="floatingInput">Tags</label>
@@ -84,10 +94,10 @@ const Addpost = () => {
           <button className="btn btn-warning w-100 py-2" type="submit">
             Post
           </button>
+          {children}
           <p className="mt-5 mb-3 text-body-secondary">© 2017–2023</p>
         </form>
       );
-  }
-};
+}
 
-export default Addpost;
+export default Editpost

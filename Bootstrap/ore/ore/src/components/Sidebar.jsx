@@ -1,7 +1,9 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { oreStore } from '../store/Store'
 
-const Sidebar = ({selectedTab, setSelectedTab}) => {
+const Sidebar = () => {
 
+    const {selectedTab, setSelectedTab} = useContext(oreStore);
 
   return (
     <div className="d-flex flex-column flex-shrink-0 p-3 text-bg-dark" style={{width: "280px"}}>

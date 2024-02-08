@@ -1,7 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import Searchpost from "./Searchpost";
+import { oreStore } from "../store/Store";
 
-const Navbar = ({selectedTab}) => {
+const Navbar = () => {
+
+    const {findPost, selectedTab} = useContext(oreStore);
+
   return (
     <header className="p-3 text-bg-dark">
       <div className="container">
@@ -53,12 +58,7 @@ const Navbar = ({selectedTab}) => {
             className="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3"
             role="search"
           >
-            {selectedTab === "Post" && <input
-              type="search"
-              className="form-control form-control-dark text-bg-dark"
-              placeholder="Search..."
-              aria-label="Search"
-            />}
+         {selectedTab === "Post" && <Searchpost findPost={findPost} />}
           </form>
 
           <div className="text-end">
