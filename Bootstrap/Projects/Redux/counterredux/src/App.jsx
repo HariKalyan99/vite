@@ -16,7 +16,8 @@ function App() {
       <Header>
         <h1 className="display-5 fw-bold text-body-emphasis">Counter</h1>
         <div className="col-lg-6 mx-auto">
-          {privacy ? <Privacy />  : <Displaycounter />}
+          {privacy && <Privacy />}
+          {!privacy && <Displaycounter />}
           <Controls />
           {/* <button onClick={() => dispatch({type: "INCREMENT"})}>AGAIN INCREMENT</button>
           <button onClick={() => dispatch({type: "MULTIPLY"})}>MULTIPLY</button> */}
