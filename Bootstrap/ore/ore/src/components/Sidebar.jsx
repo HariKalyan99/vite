@@ -1,9 +1,7 @@
-import React, { useContext } from 'react'
-import { oreStore } from '../store/Store'
+import React from 'react'
+import { Link } from 'react-router-dom'
 
 const Sidebar = () => {
-
-    const {selectedTab, setSelectedTab} = useContext(oreStore);
 
   return (
     <div className="d-flex flex-column flex-shrink-0 p-3 text-bg-dark" style={{width: "280px"}}>
@@ -13,17 +11,17 @@ const Sidebar = () => {
     </a>
     <hr />
     <ul className="nav nav-pills flex-column mb-auto">
-      <li className="nav-item" onClick={() => setSelectedTab("Post")}>
-        <a href="#" className={`nav-link text-white ${selectedTab === "Post" && "active"}`} aria-current="page">
+      <li className="nav-item" >
+        <Link to="/" className={`nav-link text-white`} aria-current="page">
           <svg className="bi pe-none me-2" width="16" height="16"><use xlinkHref="#home"></use></svg>
           Post Lists
-        </a>
+        </Link>
       </li>
-      <li onClick={() => setSelectedTab("Home")}>
-        <a href="#" className={`nav-link text-white ${selectedTab === "Home" && "active"}`}>
+      <li >
+        <Link to="/addpost" className={`nav-link text-white`}>
           <svg className="bi pe-none me-2" width="16" height="16"><use xlinkHref="#speedometer2"></use></svg>
           Home
-        </a>
+        </Link>
       </li>
     </ul>
     <hr />

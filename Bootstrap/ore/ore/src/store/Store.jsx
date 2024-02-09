@@ -3,8 +3,6 @@ import { createContext, useCallback, useEffect, useReducer, useState } from "rea
 import { v4 as uuidv4 } from "uuid";
 
 export const oreStore = createContext({
-  selectedTab: "Home",
-  setSelectedTab: () => {},
   postData: [],
   addPost: () => {},
   deletePost: () => {},
@@ -47,7 +45,6 @@ const reducerFunctionPure = (currentState, action) => {
 };
 
 const OreStoreContextProvider = ({ children }) => {
-  const [selectedTab, setSelectedTab] = useState("Home");
 
   const [getSearch, setSearch] = useState("");
 
@@ -111,8 +108,6 @@ const OreStoreContextProvider = ({ children }) => {
   });
 
   const deletePost = useCallback(async(id) => {
-    const {data} = await axios.delete(`http://localhost:8082/posts/${id}`);
-    console.log(data);
     dispatchPostData({
       type: "DELETE_POST",
       payload: {
@@ -142,8 +137,6 @@ const OreStoreContextProvider = ({ children }) => {
   return (
     <oreStore.Provider
       value={{
-        selectedTab,
-        setSelectedTab,
         postData,
         addPost,
         deletePost,
